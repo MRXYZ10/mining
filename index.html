@@ -212,10 +212,12 @@ canvas#game{ position:absolute; inset:0; width:100%; height:100%; display:block;
 .stat-cell .l{ font-size:10.5px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em; }
 .skin-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .skin-card{ padding:12px; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03); cursor:pointer; }
+.skin-card.locked{ opacity:.5; filter:grayscale(.6); cursor:not-allowed; }
 .skin-card.active{ border-color:var(--gold-2); box-shadow:0 0 0 1px var(--gold-2) inset; }
 .skin-card .swatch{ width:34px; height:34px; border-radius:50%; margin:0 auto 6px; }
 .skin-card .n{ font-size:11.5px; font-weight:700; }
 .skin-card .p{ font-size:10.5px; color:var(--ink-dim); margin-top:2px; }
+.skin-card .sell-link{ display:inline-block; margin-top:6px; font-size:10px; font-weight:700; color:var(--ruby); text-decoration:underline; cursor:pointer; }
 .close-x{ position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:9px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:var(--ink-dim); cursor:pointer; font-size:15px; }
 .xp-row{ display:flex; align-items:center; gap:8px; }
 .xp-bar{ flex:1; height:8px; border-radius:5px; background:rgba(255,255,255,.08); overflow:hidden; }
@@ -320,19 +322,19 @@ a.credit-link{ color: var(--ink-dim); }
   padding:5px 14px; border-radius:20px; cursor:pointer; display:flex; align-items:center; gap:6px;
 }
 #playBtn{
-  position:relative; width:min(190px,44vw); aspect-ratio:1; border-radius:50%; border:none; cursor:pointer;
+  position:relative; width:min(124px,30vw); aspect-ratio:1; border-radius:50%; border:none; cursor:pointer;
   background: radial-gradient(circle at 35% 30%, #fff3c4, var(--gold) 45%, var(--copper) 100%);
-  box-shadow: 0 0 0 6px rgba(255,255,255,.06), 0 0 40px rgba(244,197,66,.55), 0 14px 30px rgba(0,0,0,.5), inset 0 3px 8px rgba(255,255,255,.5), inset 0 -8px 14px rgba(120,50,10,.5);
-  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:2px;
+  box-shadow: 0 0 0 4px rgba(255,255,255,.06), 0 0 26px rgba(244,197,66,.55), 0 10px 20px rgba(0,0,0,.5), inset 0 2px 6px rgba(255,255,255,.5), inset 0 -6px 10px rgba(120,50,10,.5);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1px;
   animation: playPulse 2.1s ease-in-out infinite;
   transition: transform .15s cubic-bezier(.3,1.6,.4,1);
 }
 #playBtn:active{ transform:scale(.93); }
-#playBtn .tri{ width:0; height:0; border-top:16px solid transparent; border-bottom:16px solid transparent; border-left:26px solid #291705; margin-left:6px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
-#playBtn .lbl{ font-family:var(--font-display); font-weight:800; font-size:13px; letter-spacing:.12em; color:#291705; margin-top:2px; }
-@keyframes playPulse{ 0%,100%{ box-shadow:0 0 0 6px rgba(255,255,255,.06), 0 0 40px rgba(244,197,66,.55), 0 14px 30px rgba(0,0,0,.5), inset 0 3px 8px rgba(255,255,255,.5), inset 0 -8px 14px rgba(120,50,10,.5); } 50%{ box-shadow:0 0 0 10px rgba(255,255,255,.03), 0 0 62px rgba(244,197,66,.8), 0 14px 30px rgba(0,0,0,.5), inset 0 3px 8px rgba(255,255,255,.5), inset 0 -8px 14px rgba(120,50,10,.5); } }
+#playBtn .tri{ width:0; height:0; border-top:11px solid transparent; border-bottom:11px solid transparent; border-left:18px solid #291705; margin-left:4px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
+#playBtn .lbl{ font-family:var(--font-display); font-weight:800; font-size:10.5px; letter-spacing:.1em; color:#291705; margin-top:1px; }
+@keyframes playPulse{ 0%,100%{ box-shadow:0 0 0 4px rgba(255,255,255,.06), 0 0 26px rgba(244,197,66,.55), 0 10px 20px rgba(0,0,0,.5), inset 0 2px 6px rgba(255,255,255,.5), inset 0 -6px 10px rgba(120,50,10,.5); } 50%{ box-shadow:0 0 0 7px rgba(255,255,255,.03), 0 0 40px rgba(244,197,66,.8), 0 10px 20px rgba(0,0,0,.5), inset 0 2px 6px rgba(255,255,255,.5), inset 0 -6px 10px rgba(120,50,10,.5); } }
 #playBtn::after{
-  content:""; position:absolute; inset:-10px; border-radius:50%; border:2px solid rgba(244,197,66,.35);
+  content:""; position:absolute; inset:-7px; border-radius:50%; border:2px solid rgba(244,197,66,.35);
   animation: playRing 2.1s ease-out infinite;
 }
 @keyframes playRing{ 0%{ transform:scale(.9); opacity:.9; } 100%{ transform:scale(1.35); opacity:0; } }
@@ -667,10 +669,14 @@ a.credit-link{ color: var(--ink-dim); }
         <div class="tabs">
           <div class="tab active" data-tab="upgrades">Rig Upgrades</div>
           <div class="tab" data-tab="powerups">Power-Ups</div>
+          <div class="tab" data-tab="machines">Machines</div>
+          <div class="tab" data-tab="miners">Miners</div>
           <div class="tab" data-tab="skins">Cosmetics</div>
         </div>
         <div class="tab-body active" id="tab-upgrades"></div>
         <div class="tab-body" id="tab-powerups"></div>
+        <div class="tab-body" id="tab-machines"></div>
+        <div class="tab-body" id="tab-miners"></div>
         <div class="tab-body" id="tab-skins"></div>
         <div class="btn btn-primary" id="btnNextDepth">Descend ▸</div>
       </div>
@@ -805,9 +811,11 @@ function defaultSave(){
     depth: 1, maxDepthReached: 1,
     xp: 0, rank: 1,
     prestige: 0,
-    upgrades: { reach:0, speed:0, power:0, luck:0, magnet:0, critchance:0 },
-    inventory: { timefreeze:0, doublemoney:0, luckycharm:0, magnetburst:0 },
+    upgrades: { reach:0, speed:0, power:0, luck:0, magnet:0, critchance:0, combo:0 },
+    inventory: { timefreeze:0, doublemoney:0, luckycharm:0, magnetburst:0, megatimefreeze:0, megamagnet:0, megadouble:0, megaluckycharm:0 },
     skin: 'classic', ownedSkins: ['classic'],
+    machine: 'standard', ownedMachines: ['standard'],
+    miner: 'rookie', ownedMiners: ['rookie'],
     stats: {
       totalEarned:0, itemsCollected:0, diamondsCollected:0, tntTriggered:0,
       critHits:0, bombsHit:0, maxCombo:0, runsPlayed:0, playSeconds:0, prestigeCount:0
@@ -973,6 +981,10 @@ const ITEM_DEFS = {
   lucky:   { kind:'lucky',   rarity:'uncommon', r:13, value:15,  weight:0.6, unlock:3, tier:1 },
   bomb:    { kind:'bomb',    rarity:'common',   r:16, value:0,   weight:1.0, unlock:4, tier:0 },
   diamond: { kind:'diamond', rarity:'rare',     r:13, value:280, weight:0.8, unlock:1, tier:2 },
+  yellowdiamond:{kind:'yellowdiamond', rarity:'rare',    r:13, value:330, weight:0.75,unlock:7, tier:2 },
+  pinkdiamond:  {kind:'pinkdiamond',   rarity:'epic',    r:14, value:560, weight:1.9, unlock:16,tier:3 },
+  greendiamond: {kind:'greendiamond',  rarity:'epic',    r:14, value:600, weight:1.9, unlock:24,tier:3 },
+  whitediamond: {kind:'whitediamond',  rarity:'legendary',r:15, value:880, weight:1.2, unlock:38,tier:3 },
   tnt:     { kind:'tnt',     rarity:'uncommon', r:17, value:55,  weight:1.1, unlock:6, tier:1 },
   fossil:  { kind:'fossil',  rarity:'uncommon', r:19, value:120, weight:2.4, unlock:8, tier:1 },
   emerald: { kind:'emerald', rarity:'rare',     r:14, value:240, weight:0.9, unlock:5, tier:2 },
@@ -997,12 +1009,13 @@ const NEUTRAL_KINDS = new Set(['lucky']); // no direct payout, applies buff
 const TIER_WEIGHT = [46, 26, 15, 8]; // common, uncommon, rare, epic spawn weight (boss handled separately)
 
 const UPGRADE_DEFS = [
-  { id:'reach', name:'Cable Length', desc:'Claw reaches deeper into the mine', icon:'🪝', max:10, baseCost:50, growth:1.42, per:0.09 },
-  { id:'speed', name:'Drop Speed', desc:'Claw shoots downward faster', icon:'⚡', max:10, baseCost:50, growth:1.42, per:0.10 },
-  { id:'power', name:'Winch Power', desc:'Reels in heavy loads faster', icon:'💪', max:10, baseCost:55, growth:1.42, per:0.11 },
-  { id:'luck', name:'Prospector\'s Luck', desc:'Better odds for rare treasure & crits', icon:'🍀', max:10, baseCost:65, growth:1.45, per:0.02 },
-  { id:'magnet', name:'Magnet Coil', desc:'Widens the claw\'s grab radius', icon:'🧲', max:10, baseCost:70, growth:1.45, per:4.5 },
-  { id:'critchance', name:'Precision Grip', desc:'Higher chance of a critical haul', icon:'🎯', max:10, baseCost:75, growth:1.48, per:0.03 }
+  { id:'reach', name:'Cable Length', desc:'Claw reaches deeper into the mine', icon:'🪝', max:10, baseCost:220, growth:2.15, per:0.09 },
+  { id:'speed', name:'Drop Speed', desc:'Claw shoots downward faster', icon:'⚡', max:10, baseCost:220, growth:2.15, per:0.10 },
+  { id:'power', name:'Winch Power', desc:'Reels in heavy loads faster', icon:'💪', max:10, baseCost:250, growth:2.15, per:0.11 },
+  { id:'luck', name:'Prospector\'s Luck', desc:'Better odds for rare treasure & crits', icon:'🍀', max:10, baseCost:300, growth:2.2, per:0.02 },
+  { id:'magnet', name:'Magnet Coil', desc:'Widens the claw\'s grab radius', icon:'🧲', max:10, baseCost:325, growth:2.2, per:4.5 },
+  { id:'critchance', name:'Precision Grip', desc:'Higher chance of a critical haul', icon:'🎯', max:10, baseCost:350, growth:2.25, per:0.03 },
+  { id:'combo', name:'Rhythm Grip', desc:'Combo window stays open longer between grabs', icon:'🔥', max:10, baseCost:375, growth:2.25, per:0.15 }
 ];
 function upgradeCost(id){
   const def = UPGRADE_DEFS.find(u=>u.id===id);
@@ -1015,20 +1028,70 @@ function upgradeMul(id){
 }
 
 const POWERUP_DEFS = [
-  { id:'timefreeze', name:'Time Freeze', desc:'Freezes the clock for 5s', icon:'⏱', cost:120, currency:'money' },
-  { id:'doublemoney', name:'Double Money', desc:'2x treasure value for 15s', icon:'✖2', cost:200, currency:'money' },
-  { id:'luckycharm', name:'Lucky Charm', desc:'Next 5 grabs are guaranteed critical', icon:'🍀', cost:8, currency:'gems' },
-  { id:'magnetburst', name:'Magnet Burst', desc:'Huge grab radius for 10s', icon:'🧲', cost:10, currency:'gems' }
+  { id:'timefreeze', name:'Time Freeze', desc:'Freezes the clock for 5s', icon:'⏱', cost:450, currency:'money' },
+  { id:'doublemoney', name:'Double Money', desc:'2x treasure value for 15s', icon:'✖2', cost:750, currency:'money' },
+  { id:'luckycharm', name:'Lucky Charm', desc:'Next 5 grabs are guaranteed critical', icon:'🍀', cost:28, currency:'gems' },
+  { id:'magnetburst', name:'Magnet Burst', desc:'Huge grab radius for 10s', icon:'🧲', cost:35, currency:'gems' },
+  { id:'megatimefreeze', name:'Chrono Vault', desc:'Freezes the clock for 12s', icon:'⏱✨', cost:1600, currency:'money' },
+  { id:'megamagnet', name:'Gravity Well', desc:'Huge grab radius for 20s', icon:'🌀', cost:2200, currency:'money' },
+  { id:'megadouble', name:'Fortune Streak', desc:'2x treasure value for 30s', icon:'💹', cost:60, currency:'gems' },
+  { id:'megaluckycharm', name:'Golden Charm', desc:'Next 12 grabs are guaranteed critical', icon:'🌟', cost:60, currency:'gems' }
 ];
 
 const SKIN_DEFS = [
   { id:'classic', name:'Classic Steel', cost:0, currency:'money', rope:'#3b2a1a', claw:'#d8d8d8', swatch:'#9a9a9a' },
-  { id:'gold',    name:'Gold Plated',   cost:1200, currency:'money', rope:'#7a5a1a', claw:'#f4d47c', swatch:'#f4c542' },
-  { id:'obsidian',name:'Obsidian',      cost:2600, currency:'money', rope:'#1a1a22', claw:'#4a4a5c', swatch:'#2a2a36' },
-  { id:'crystal', name:'Crystal',       cost:60,  currency:'gems',  rope:'#2a5a6a', claw:'#8fe3ff', swatch:'#5fd4e8' },
-  { id:'molten',  name:'Molten Core',   cost:90,  currency:'gems',  rope:'#5a1a0a', claw:'#ff6a2a', swatch:'#ff9d3d' },
-  { id:'toxic',   name:'Toxic Vein',    cost:70,  currency:'gems',  rope:'#2a4a1a', claw:'#8fff5a', swatch:'#6fe37c' }
+  { id:'gold',    name:'Gold Plated',   cost:4200, currency:'money', rope:'#7a5a1a', claw:'#f4d47c', swatch:'#f4c542' },
+  { id:'obsidian',name:'Obsidian',      cost:9000, currency:'money', rope:'#1a1a22', claw:'#4a4a5c', swatch:'#2a2a36' },
+  { id:'platinum',name:'Platinum Edge', cost:26000,currency:'money', rope:'#5a5a5a', claw:'#e8ecef', swatch:'#cfd6dd' },
+  { id:'crystal', name:'Crystal',       cost:220,  currency:'gems',  rope:'#2a5a6a', claw:'#8fe3ff', swatch:'#5fd4e8' },
+  { id:'molten',  name:'Molten Core',   cost:320,  currency:'gems',  rope:'#5a1a0a', claw:'#ff6a2a', swatch:'#ff9d3d' },
+  { id:'toxic',   name:'Toxic Vein',    cost:260,  currency:'gems',  rope:'#2a4a1a', claw:'#8fff5a', swatch:'#6fe37c' },
+  { id:'voidblack',name:'Void Black',   cost:480,  currency:'gems',  rope:'#0a0a0e', claw:'#1a1a24', swatch:'#b46fe3' },
+  { id:'inferno', name:'Inferno',       cost:620,  currency:'gems',  rope:'#4a0a0a', claw:'#ff2a2a', swatch:'#e0435f' }
 ];
+
+/* ---------------------------------------------------------------
+   MINING MACHINES — equippable rigs with real stat bonuses
+   (distinct from cosmetic-only Skins). One equipped at a time.
+--------------------------------------------------------------- */
+const MACHINE_DEFS = [
+  { id:'standard',       name:'Standard Rig',     desc:'The reliable starter rig. No bonuses, no drawbacks.', icon:'⚙️', cost:0,    currency:'money', unlock:1,  bonus:{} },
+  { id:'steamdrill',     name:'Steam Drill',      desc:'+15% Winch Power — heavy loads reel in faster.',      icon:'🛠️', cost:32000, currency:'money', unlock:5,  bonus:{power:0.15} },
+  { id:'turbowinch',     name:'Turbo Winch',      desc:'+15% Drop Speed — the claw snaps down quicker.',      icon:'🚀', cost:32000, currency:'money', unlock:5,  bonus:{speed:0.15} },
+  { id:'magnetcrane',    name:'Magnet Crane',     desc:'+8 grab radius — a wider net for stray treasure.',    icon:'🧲', cost:46000, currency:'money', unlock:12, bonus:{magnet:8} },
+  { id:'hydraulicpress', name:'Hydraulic Press',  desc:'+10% Power and +10% Speed together.',                 icon:'🏗️', cost:68000, currency:'money', unlock:18, bonus:{power:0.10, speed:0.10} },
+  { id:'titanrig',       name:'Titan Rig',        desc:'+20% Power and +10 grab radius — built for depth.',   icon:'🏔️', cost:120000, currency:'money', unlock:45, bonus:{power:0.20, magnet:10} },
+  { id:'laserexcavator', name:'Laser Excavator',  desc:'+6% Critical Chance — precision-cut hauls.',           icon:'🔦', cost:1400, currency:'gems',  unlock:16, bonus:{crit:0.06} },
+  { id:'quantumclaw',    name:'Quantum Claw',     desc:'A small bonus to every stat — the ultimate rig.',      icon:'✨', cost:2600, currency:'gems',  unlock:30, bonus:{power:0.08, speed:0.08, magnet:4, crit:0.03} },
+  { id:'voidengine',     name:'Void Engine',      desc:'+12% to every stat — a near-mythical machine.',        icon:'🌌', cost:4200, currency:'gems',  unlock:55, bonus:{power:0.12, speed:0.12, magnet:6, crit:0.05} }
+];
+
+/* ---------------------------------------------------------------
+   MINERS — hireable prospectors, each with their own Strength
+   stat (bigger Strength = more Winch Power). One hired at a
+   time; unowned miners can be hired from the Shop, and any
+   owned miner (other than the one currently working, and other
+   than the free Rookie) can be sold back for half its hire cost.
+--------------------------------------------------------------- */
+const MINER_DEFS = [
+  { id:'rookie',   name:'Rookie Joe',      desc:'Fresh off the surface. No muscle yet, but he works for free.', icon:'🙂', strength:1,  cost:0,    currency:'money', unlock:1  },
+  { id:'stronarm', name:'Stronarm Sal',    desc:'A dock worker turned digger — solid, dependable hauling power.', icon:'💪', strength:3,  cost:6500,  currency:'money', unlock:3  },
+  { id:'bigtom',   name:'Big Tom',         desc:'Twice the size of the average prospector, twice the pull.',    icon:'🧔', strength:5,  cost:19000, currency:'money', unlock:8  },
+  { id:'ironhilda',name:'Iron Hilda',      desc:'Former strongwoman. Nothing in this mine out-muscles her.',    icon:'🦾', strength:7,  cost:42000, currency:'money', unlock:14 },
+  { id:'grizzled', name:'Grizzled Pete',   desc:'Decades underground built arms like winch cable.',             icon:'🧓', strength:9,  cost:78000, currency:'money', unlock:22 },
+  { id:'ogre',     name:'Ogre Grum',       desc:'Not entirely human, and not entirely gentle with the claw.',   icon:'👹', strength:12, cost:2400,  currency:'gems',  unlock:28 },
+  { id:'colossus', name:'The Colossus',    desc:'Legendary strength — the strongest hands to ever grip a claw.',icon:'🦍', strength:16, cost:5200,  currency:'gems',  unlock:40 },
+  { id:'titanhelga',name:'Titan Helga',    desc:'She once dragged a loaded mine cart out by hand.',             icon:'🦸‍♀️', strength:20, cost:140000,currency:'money', unlock:55 },
+  { id:'behemoth', name:'The Behemoth',    desc:'Nobody knows where he came from. Nobody asks twice.',          icon:'🗿', strength:25, cost:8500,  currency:'gems',  unlock:65 },
+  { id:'goliathrex',name:'Goliath Rex',    desc:'A myth made flesh — the strongest hire in the mine\'s history.',icon:'👑', strength:32, cost:15000, currency:'gems',  unlock:80 }
+];
+function minerCard(id){ return MINER_DEFS.find(m=>m.id===id) || MINER_DEFS[0]; }
+function minerBonus(){
+  const m = minerCard(S.miner);
+  // each point of Strength adds 2.5% Winch Power
+  return { power: (m.strength-1)*0.025 };
+}
+function minerSellValue(m){ return Math.round(m.cost*0.5); }
 
 const ACHIEVEMENT_DEFS = [
   { id:'first', name:'First Strike', desc:'Collect your first treasure', icon:'⛏', reward:5, check:s=>s.stats.itemsCollected>=1 },
@@ -1089,8 +1152,8 @@ const MODE_DEFS = [
   { id:'treasurehunt', name:'Treasure Hunt', icon:'💎', diff:'med', diffLabel:'Medium', desc:'Rare and epic treasure spawn far more often for the whole run.', reward:'Coins · Rare finds', level:'Rank 3+' },
   { id:'hardcore', name:'Hardcore', icon:'💀', diff:'hard', diffLabel:'Extreme', desc:'One bomb and it\'s over — no penalty grace, just an instant end to the run.', reward:'2× Coins', level:'Rank 5+' },
   { id:'night', name:'Night Mode', icon:'🌙', diff:'easy', diffLabel:'Cosmetic', desc:'The same mine, lit only by torchlight. Visual variant of Story Mode.', reward:'Coins · XP · Gems', level:'Any level' },
-  { id:'bossbattle', name:'Boss Battle', icon:'👹', diff:'hard', diffLabel:'Coming Soon', desc:'Face down multi-hit cave bosses in a dedicated arena. In development.', reward:'—', level:'—', soon:true },
-  { id:'events', name:'Live Events', icon:'🎪', diff:'med', diffLabel:'Coming Soon', desc:'Rotating limited-time mine events with exclusive rewards. In development.', reward:'—', level:'—', soon:true }
+  { id:'bossbattle', name:'Boss Battle', icon:'👹', diff:'hard', diffLabel:'Hard', desc:'Drop straight into a guaranteed guardian-treasure depth with extra hazards prowling.', reward:'Huge single haul', level:'Rank 4+' },
+  { id:'events', name:'Live Events', icon:'🎪', diff:'med', diffLabel:'Medium', desc:'One special depth-wide event (Golden Rain, Meteor Shower, or Earthquake) locked in for the whole run.', reward:'Coins · XP · Gems', level:'Any level' }
 ];
 
 /* ---------------------------------------------------------------
@@ -1103,7 +1166,7 @@ let scaleF = 1, offX = 0, offY = 0;
 
 function resizeCanvas(){
   const rect = canvas.getBoundingClientRect();
-  const dpr = Math.min(window.devicePixelRatio||1, 2.5);
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
   canvas.width = Math.round(rect.width*dpr);
   canvas.height = Math.round(rect.height*dpr);
   scaleF = Math.min(rect.width/VW, rect.height/VH);
@@ -1141,7 +1204,8 @@ const RUN = {
   survivalScore: 0,
   challengeTarget: 0,
   lastGrabWasMiss: false,
-  variant: null            // null | 'timeattack' | 'hardcore' | 'treasurehunt' | 'night'
+  variant: null,           // null | 'timeattack' | 'hardcore' | 'treasurehunt' | 'night' | 'bossbattle' | 'events'
+  forcedEvent: null
 };
 
 const base = { x: VW/2, y: 62 };
@@ -1220,7 +1284,7 @@ function genField(depth){
   let cells=[]; for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) cells.push([r,c]);
   cells.sort(()=>rf()-0.5);
   const count = Math.min(cells.length, 16+Math.floor(depth*0.6)+RUN.eventExtraRare);
-  const valueFactor = 1 + (depth-1)*0.05;
+  const valueFactor = 0.82 + (depth-1)*0.032;
 
   for(let i=0;i<count;i++){
     const [r,c] = cells[i];
@@ -1265,8 +1329,9 @@ function genField(depth){
 function spawnHazards(depth, rf){
   const rff = rf||Math.random;
   hazards = [];
-  if(depth<7) return;
-  const n = clamp(Math.floor((depth-7)/6)+1, 1, 4);
+  const boosted = RUN.variant==='bossbattle';
+  if(depth<7 && !boosted) return;
+  const n = boosted ? 3 : clamp(Math.floor((depth-7)/6)+1, 1, 4);
   for(let i=0;i<n;i++){
     const type = rff()<0.6 ? 'bat' : 'spider';
     if(type==='bat'){
@@ -1342,7 +1407,7 @@ function drawHazards(){
 /* ---------------------------------------------------------------
    depth / run control
 --------------------------------------------------------------- */
-function depthGoal(depth){ return Math.round(240 * Math.pow(1.05, depth-1)); }
+function depthGoal(depth){ return Math.round(320 * Math.pow(1.085, depth-1)); }
 function depthTime(depth){ return clamp(46 - depth*0.32, 22, 46); }
 
 const RANDOM_EVENTS = [
@@ -1369,11 +1434,15 @@ function startDepth(depth){
     RUN.timeLeft = 34; RUN.timeMax = 34;
   } else {
     RUN.goal = depthGoal(depth);
-    const roll = Math.random();
-    if(roll<0.22 && depth>2){
-      const ev = RANDOM_EVENTS[irand(0,5)];
-      ev.apply(); RUN.eventLabel = ev.label;
-      if(ev.label) toast('Random Event', ev.label);
+    if(RUN.variant==='events' && RUN.forcedEvent){
+      RUN.forcedEvent.apply(); RUN.eventLabel = RUN.forcedEvent.label;
+    } else {
+      const roll = Math.random();
+      if(roll<0.22 && depth>2){
+        const ev = RANDOM_EVENTS[irand(0,5)];
+        ev.apply(); RUN.eventLabel = ev.label;
+        if(ev.label) toast('Random Event', ev.label);
+      }
     }
     RUN.timeLeft = depthTime(depth) + RUN.eventTimeBonus;
     RUN.timeMax = RUN.timeLeft;
@@ -1424,6 +1493,23 @@ function variantRewardMul(){
   if(RUN.variant==='hardcore') return 2;
   return 1;
 }
+function startBossBattle(){
+  RUN.mode='story'; RUN.variant='bossbattle'; RUN.forcedEvent=null;
+  if(S.devMode){ RUN.money = S.money = 999999999; } else { RUN.money=0; S.money=0; }
+  S.stats.runsPlayed++;
+  const bossDepth = Math.max(10, Math.ceil((S.maxDepthReached||1)/10)*10);
+  startDepth(bossDepth);
+  toast('👹 Boss Battle', `A guardian treasure awaits at Depth ${bossDepth} — haul it up!`);
+}
+function startLiveEvents(){
+  RUN.mode='story'; RUN.variant='events';
+  const pool = RANDOM_EVENTS.filter(e=>e.id!=='none');
+  RUN.forcedEvent = pool[irand(0,pool.length-1)];
+  if(S.devMode){ RUN.money = S.money = 999999999; } else { RUN.money=0; S.money=0; }
+  S.stats.runsPlayed++;
+  startDepth(1);
+  toast('🎪 Live Event', RUN.forcedEvent.label || 'A special event is active for this run!');
+}
 function startChallenge(){
   RUN.mode='challenge';
   const seed = seedFromString('gd-'+todayStr());
@@ -1439,6 +1525,7 @@ function depthComplete(){
     S.money = RUN.money;
     progressMission('clearDepth', 1);
     checkAchievements();
+    if(RUN.variant==='bossbattle'){ RUN.variant=null; toast('👹 Guardian Defeated!', 'Boss treasure secured — continuing as Story Mode.'); }
     RUN.state='SHOP';
     openShop();
   } else if(RUN.mode==='challenge'){
@@ -1461,13 +1548,20 @@ function depthFailed(){
 /* ---------------------------------------------------------------
    claw physics
 --------------------------------------------------------------- */
+function machineBonus(){
+  const m = MACHINE_DEFS.find(x=>x.id===S.machine) || MACHINE_DEFS[0];
+  return m.bonus||{};
+}
 function currentMults(){
+  const mb = machineBonus();
+  const nb = minerBonus();
   return {
     reach: 1+upgradeMul('reach'),
-    speed: 1+upgradeMul('speed'),
-    power: 1+upgradeMul('power'),
-    magnet: upgradeMul('magnet') + (RUN.buffMagnet>0?40:0),
-    critBase: 0.045 + upgradeMul('critchance') + upgradeMul('luck')*0.4
+    speed: 1+upgradeMul('speed')+(mb.speed||0),
+    power: 1+upgradeMul('power')+(mb.power||0)+(nb.power||0),
+    magnet: upgradeMul('magnet') + (RUN.buffMagnet>0?40:0) + (mb.magnet||0),
+    critBase: 0.045 + upgradeMul('critchance') + upgradeMul('luck')*0.4 + (mb.crit||0),
+    comboSustain: upgradeMul('combo')
   };
 }
 
@@ -1568,7 +1662,7 @@ function deliverItem(it){
   }
 
   // combo
-  RUN.comboTimer = 2.2;
+  RUN.comboTimer = 2.2 + M.comboSustain;
   RUN.combo++;
   S.stats.maxCombo = Math.max(S.stats.maxCombo, RUN.combo);
   const comboMul = 1 + Math.min(RUN.combo-1,9)*0.08;
@@ -1592,14 +1686,14 @@ function deliverItem(it){
 
   RUN.money += val;
   S.stats.totalEarned += Math.max(0,val);
-  if(it.kind==='diamond') S.stats.diamondsCollected++;
+  if(['diamond','yellowdiamond','pinkdiamond','greendiamond','whitediamond','blackdiamond'].includes(it.kind)) S.stats.diamondsCollected++;
 
   const color = RARITY[it.rarity] ? RARITY[it.rarity].color : '#ffe27a';
   spawnPopup(base.x, base.y-10, (isCrit?'CRIT! ':'')+`+$${fmt(val)}`, isCrit?'#ff6ec7':color, isCrit);
   spawnBurst(base.x, base.y, color, it.kind==='boss'?40:14);
   if(RUN.combo>=3){ showCombo(); Audio_.combo(); }
   if(isCrit){ Audio_.crit(); flashScreen('rgba(255,157,61,0.25)'); vibrate(30); }
-  else if(it.kind==='diamond'||it.kind==='amethyst'||it.kind==='blackdiamond'||it.kind==='heart'){ Audio_.sparkle(); }
+  else if(['diamond','amethyst','blackdiamond','heart','yellowdiamond','pinkdiamond','greendiamond','whitediamond'].includes(it.kind)){ Audio_.sparkle(); }
   else if(it.kind==='rock'){ Audio_.rock(); }
   else { Audio_.coin(); }
 
@@ -1747,11 +1841,15 @@ function drawNightOverlay(){
   ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(base.x,base.y,220,0,Math.PI*2); ctx.fill();
   ctx.restore();
 }
+let _skyGradTheme=null, _skyGrad=null;
 function drawSky(){
   const theme = depthTheme();
-  const g = ctx.createLinearGradient(0,0,0,SKY_H+30);
-  g.addColorStop(0,theme.sky[0]); g.addColorStop(0.55,theme.sky[1]); g.addColorStop(1,theme.sky[2]);
-  ctx.fillStyle=g; ctx.fillRect(0,0,VW,SKY_H+30);
+  if(theme!==_skyGradTheme){
+    _skyGrad = ctx.createLinearGradient(0,0,0,SKY_H+30);
+    _skyGrad.addColorStop(0,theme.sky[0]); _skyGrad.addColorStop(0.55,theme.sky[1]); _skyGrad.addColorStop(1,theme.sky[2]);
+    _skyGradTheme = theme;
+  }
+  ctx.fillStyle=_skyGrad; ctx.fillRect(0,0,VW,SKY_H+30);
   ctx.beginPath(); ctx.fillStyle='rgba(255,220,160,0.85)'; ctx.arc(66,36,22,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.fillStyle='rgba(255,220,160,0.18)'; ctx.arc(66,36,38,0,Math.PI*2); ctx.fill();
   ctx.fillStyle='rgba(20,14,26,0.5)';
@@ -1760,36 +1858,50 @@ function drawSky(){
   ctx.quadraticCurveTo(650,SKY_H-22,VW,SKY_H+6);
   ctx.lineTo(VW,SKY_H+30); ctx.lineTo(0,SKY_H+30); ctx.fill();
 }
+let _groundGradTheme=null, _groundGrad=null, _vignetteGrad=null;
 function drawGround(){
   const theme = depthTheme();
-  const g = ctx.createLinearGradient(0,GROUND_TOP,0,VH);
-  g.addColorStop(0,theme.ground[0]); g.addColorStop(0.14,theme.ground[1]); g.addColorStop(1,theme.ground[2]);
-  ctx.fillStyle=g; ctx.fillRect(0,GROUND_TOP,VW,VH-GROUND_TOP);
+  if(theme!==_groundGradTheme){
+    _groundGrad = ctx.createLinearGradient(0,GROUND_TOP,0,VH);
+    _groundGrad.addColorStop(0,theme.ground[0]); _groundGrad.addColorStop(0.14,theme.ground[1]); _groundGrad.addColorStop(1,theme.ground[2]);
+    _groundGradTheme = theme;
+  }
+  ctx.fillStyle=_groundGrad; ctx.fillRect(0,GROUND_TOP,VW,VH-GROUND_TOP);
   ctx.fillStyle=theme.grass[0]; ctx.fillRect(0,GROUND_TOP-4,VW,6);
   ctx.fillStyle=theme.grass[1]; ctx.fillRect(0,GROUND_TOP-6,VW,3);
   for(const d of dirtNoise){ ctx.beginPath(); ctx.fillStyle=d.c; ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fill(); }
-  // torchlight vignette pulse (dynamic lighting, tinted per depth)
+  // torchlight vignette pulse (dynamic lighting, tinted per depth) — stays live, it animates
   const pulse = 0.5+Math.sin(performance.now()/1400)*0.08;
   const rg = ctx.createRadialGradient(base.x,base.y+40,20, base.x,base.y+40, 340);
   rg.addColorStop(0, `rgba(${theme.torch},${0.10*pulse})`);
   rg.addColorStop(1, `rgba(${theme.torch},0)`);
   ctx.fillStyle=rg; ctx.fillRect(0,GROUND_TOP,VW,VH-GROUND_TOP);
-  // vignette edges
-  const vg = ctx.createRadialGradient(VW/2,VH/2,VH*0.35, VW/2,VH/2,VH*0.85);
-  vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.45)');
-  ctx.fillStyle=vg; ctx.fillRect(0,0,VW,VH);
+  // vignette edges — purely static, built once and reused forever
+  if(!_vignetteGrad){
+    _vignetteGrad = ctx.createRadialGradient(VW/2,VH/2,VH*0.35, VW/2,VH/2,VH*0.85);
+    _vignetteGrad.addColorStop(0,'rgba(0,0,0,0)'); _vignetteGrad.addColorStop(1,'rgba(0,0,0,0.45)');
+  }
+  ctx.fillStyle=_vignetteGrad; ctx.fillRect(0,0,VW,VH);
 }
+let _wallGradTheme=null, _wallGradL=null, _wallGradR=null;
 function drawCaveWalls(){
   // parallax rock walls framing the pit, with flickering torch pools
   const theme = depthTheme();
   const t = performance.now();
+  if(theme!==_wallGradTheme){
+    const w = 46;
+    _wallGradL = ctx.createLinearGradient(0,0,w,0);
+    _wallGradL.addColorStop(0,`rgba(${theme.wall},0.85)`); _wallGradL.addColorStop(1,`rgba(${theme.wall},0)`);
+    _wallGradR = ctx.createLinearGradient(VW-w,0,VW,0);
+    _wallGradR.addColorStop(0,`rgba(${theme.wall},0)`); _wallGradR.addColorStop(1,`rgba(${theme.wall},0.85)`);
+    _wallGradTheme = theme;
+  }
   for(const side of [-1,1]){
     ctx.save();
     const w = 46;
     const x0 = side<0 ? 0 : VW-w;
-    const g = ctx.createLinearGradient(x0,0,x0+ (side<0?w:-w),0);
-    g.addColorStop(0,`rgba(${theme.wall},0.85)`); g.addColorStop(1,`rgba(${theme.wall},0)`);
-    ctx.fillStyle=g; ctx.fillRect(x0,GROUND_TOP-6,w,VH-GROUND_TOP+6);
+    ctx.fillStyle = side<0 ? _wallGradL : _wallGradR;
+    ctx.fillRect(x0,GROUND_TOP-6,w,VH-GROUND_TOP+6);
     ctx.restore();
   }
   // two torches flickering on the pit walls
@@ -1851,7 +1963,7 @@ function drawItem(it){
   }
   switch(it.kind){
     case 'rock': drawRock(it); break;
-    case 'diamond': case 'emerald': case 'ruby': case 'sapphire': case 'amethyst': case 'blackdiamond': drawGem(it); break;
+    case 'diamond': case 'emerald': case 'ruby': case 'sapphire': case 'amethyst': case 'blackdiamond': case 'yellowdiamond': case 'pinkdiamond': case 'greendiamond': case 'whitediamond': drawGem(it); break;
     case 'bomb': drawBomb(it); break;
     case 'tnt': drawTnt(it); break;
     case 'lucky': drawClover(it); break;
@@ -1882,16 +1994,90 @@ function drawRock(it){
   ctx.beginPath(); ctx.moveTo(-it.r*0.3,-it.r*0.4); ctx.lineTo(it.r*0.1,it.r*0.1); ctx.stroke();
   ctx.restore();
 }
-const GEM_COLORS = { diamond:['#e9fbff','#8fe3ff','#3fa8d6'], emerald:['#e8fff0','#6fe37c','#1f7a3f'], ruby:['#ffe8ee','#e0435f','#8f1d33'], sapphire:['#e8f0ff','#4f7de0','#233f8f'], amethyst:['#f5e8ff','#b46fe3','#5a2a8f'], blackdiamond:['#e8e8f5','#4a3a6a','#0a0812'] };
+const GEM_COLORS = { diamond:['#e9fbff','#8fe3ff','#3fa8d6'], emerald:['#e8fff0','#6fe37c','#1f7a3f'], ruby:['#ffe8ee','#e0435f','#8f1d33'], sapphire:['#e8f0ff','#4f7de0','#233f8f'], amethyst:['#f5e8ff','#b46fe3','#5a2a8f'], blackdiamond:['#e8e8f5','#4a3a6a','#0a0812'], yellowdiamond:['#fff9d6','#f4d347','#a8841a'], pinkdiamond:['#ffe6f0','#ff8fc0','#a83a6a'], greendiamond:['#eaffe0','#8fe36f','#3a7a2a'], whitediamond:['#ffffff','#eef7ff','#a8c8d6'] };
+function drawSparkleGlint(cx,cy,size,alpha){
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = '#ffffff';
+  ctx.translate(cx,cy);
+  ctx.beginPath();
+  ctx.moveTo(0,-size); ctx.lineTo(size*0.16,-size*0.16); ctx.lineTo(size,0);
+  ctx.lineTo(size*0.16,size*0.16); ctx.lineTo(0,size);
+  ctx.lineTo(-size*0.16,size*0.16); ctx.lineTo(-size,0);
+  ctx.lineTo(-size*0.16,-size*0.16);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+const _gemGradCache = {};
+function getGemGradient(kind, r, cols){
+  let entry = _gemGradCache[kind];
+  if(!entry || entry.r!==r){
+    const g = ctx.createLinearGradient(-r,-r,r,r);
+    g.addColorStop(0,cols[0]); g.addColorStop(0.5,cols[1]); g.addColorStop(1,cols[2]);
+    entry = { r, g };
+    _gemGradCache[kind] = entry;
+  }
+  return entry.g;
+}
 function drawGem(it){
-  const pulse = 1+Math.sin(performance.now()/220+it.wobble)*0.07;
-  ctx.scale(pulse,pulse); ctx.rotate(Math.PI/4);
-  const s = it.r*1.15; const cols = GEM_COLORS[it.kind];
-  const g = ctx.createLinearGradient(-s,-s,s,s);
-  g.addColorStop(0,cols[0]); g.addColorStop(0.5,cols[1]); g.addColorStop(1,cols[2]);
-  ctx.fillStyle=g; ctx.fillRect(-s,-s,s*2,s*2);
-  ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.2; ctx.strokeRect(-s,-s,s*2,s*2);
-  ctx.strokeStyle='rgba(255,255,255,0.9)'; ctx.beginPath(); ctx.moveTo(-s*0.4,-s*0.4); ctx.lineTo(s*0.4,s*0.4); ctx.stroke();
+  const now = performance.now();
+  const pulse = 1+Math.sin(now/220+it.wobble)*0.06;
+  ctx.scale(pulse,pulse);
+  const r = it.r*1.22;
+  const cols = GEM_COLORS[it.kind];
+  const sides = 8;
+  const rotOff = Math.PI/8 + it.wobble*0.15; // slight per-gem tilt so a field of gems doesn't look identical
+  const pts = [];
+  for(let i=0;i<sides;i++){ const a = rotOff + i*(Math.PI*2/sides); pts.push([Math.cos(a)*r, Math.sin(a)*r]); }
+
+  // crown body — base colour gradient across the whole cut (cached per kind: same colours/radius every time)
+  ctx.beginPath();
+  pts.forEach(([x,y],i)=> i===0?ctx.moveTo(x,y):ctx.lineTo(x,y));
+  ctx.closePath();
+  ctx.fillStyle = getGemGradient(it.kind, r, cols); ctx.fill();
+  ctx.shadowBlur = 0; // keep the outer glow on the body only; facets stay crisp
+
+  // facet triangles — brightness turns with a slow-rotating light so the gem
+  // reads as faceted glass catching light, not a flat sticker
+  const lightAngle = (now/1600 + it.wobble*2) % (Math.PI*2);
+  for(let i=0;i<sides;i++){
+    const a0 = rotOff + i*(Math.PI*2/sides);
+    const a1 = rotOff + (i+1)*(Math.PI*2/sides);
+    const mid = (a0+a1)/2;
+    const diff = Math.abs(((mid-lightAngle+Math.PI*3)%(Math.PI*2))-Math.PI);
+    const bright = 1-diff/Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(0,0); ctx.lineTo(Math.cos(a0)*r,Math.sin(a0)*r); ctx.lineTo(Math.cos(a1)*r,Math.sin(a1)*r); ctx.closePath();
+    if(bright>0.5) ctx.fillStyle = `rgba(255,255,255,${((bright-0.5)*0.65).toFixed(3)})`;
+    else ctx.fillStyle = `rgba(0,0,0,${((0.5-bright)*0.32).toFixed(3)})`;
+    ctx.fill();
+  }
+
+  // table facet — bright inner core
+  ctx.beginPath();
+  for(let i=0;i<sides;i++){
+    const a = rotOff+i*(Math.PI*2/sides); const rr=r*0.4;
+    const x=Math.cos(a)*rr,y=Math.sin(a)*rr; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle='rgba(255,255,255,0.48)'; ctx.fill();
+
+  // facet linework — fine lines from the culet out to each crown edge
+  ctx.strokeStyle='rgba(255,255,255,0.38)'; ctx.lineWidth=0.7;
+  for(const [x,y] of pts){ ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(x,y); ctx.stroke(); }
+  ctx.strokeStyle='rgba(255,255,255,0.9)'; ctx.lineWidth=1.1;
+  ctx.beginPath(); pts.forEach(([x,y],i)=> i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)); ctx.closePath(); ctx.stroke();
+
+  // periodic star-shaped sparkle — timed off each gem's own wobble seed so a
+  // cluster of gems twinkles in and out of sync rather than all at once
+  const cyc = 2.6;
+  const ph = (now/1000 + it.wobble*1.7) % cyc;
+  if(ph < 0.35){
+    const tt = ph/0.35;
+    const alpha = Math.sin(tt*Math.PI);
+    const gx = Math.cos(it.wobble*2.1)*r*0.32, gy = Math.sin(it.wobble*2.1)*r*0.32 - r*0.12;
+    drawSparkleGlint(gx, gy, r*0.55, alpha);
+  }
 }
 function drawNugget(it,c1,c2){
   ctx.beginPath(); const n=8;
@@ -2219,16 +2405,27 @@ function showCombo(){
 }
 
 let lastHudMoney=null,lastHudTime=null;
+const _hudPrev = { depth:null, money:null, goal:null, fillPct:null, t:null, low:null, gems:null };
 function updateHUD(force){
   const depthLabel = RUN.mode==='survival' ? 'SURVIVAL' : RUN.mode==='challenge' ? 'DAILY CHALLENGE' : (RUN.depth>50?`DEPTH ${RUN.depth} · ENDLESS`:`DEPTH ${RUN.depth}`);
-  $('depthText').textContent = depthLabel;
-  $('moneyText').textContent = '$'+fmt(RUN.money);
-  $('goalText').textContent = RUN.mode==='survival' ? 'Best $'+fmt(S.survivalBest) : '$'+fmt(RUN.goal);
-  $('goalFill').style.width = RUN.mode==='survival' ? '100%' : Math.min(100, RUN.money/RUN.goal*100)+'%';
+  if(force || _hudPrev.depth!==depthLabel){ $('depthText').textContent = depthLabel; _hudPrev.depth=depthLabel; }
+
+  const moneyStr = '$'+fmt(RUN.money);
+  if(force || _hudPrev.money!==moneyStr){ $('moneyText').textContent = moneyStr; _hudPrev.money=moneyStr; }
+
+  const goalStr = RUN.mode==='survival' ? 'Best $'+fmt(S.survivalBest) : '$'+fmt(RUN.goal);
+  if(force || _hudPrev.goal!==goalStr){ $('goalText').textContent = goalStr; _hudPrev.goal=goalStr; }
+
+  const fillPct = RUN.mode==='survival' ? 100 : Math.min(100, RUN.money/RUN.goal*100);
+  if(force || _hudPrev.fillPct!==fillPct){ $('goalFill').style.width = fillPct+'%'; _hudPrev.fillPct=fillPct; }
+
   const t = Math.ceil(RUN.timeLeft);
-  $('timerText').textContent = t+'s';
-  $('timerText').classList.toggle('low', RUN.timeLeft<10);
-  $('gemText').textContent = fmt(S.gems);
+  if(force || _hudPrev.t!==t){ $('timerText').textContent = t+'s'; _hudPrev.t=t; }
+  const low = RUN.timeLeft<10;
+  if(force || _hudPrev.low!==low){ $('timerText').classList.toggle('low', low); _hudPrev.low=low; }
+
+  const gemsStr = fmt(S.gems);
+  if(force || _hudPrev.gems!==gemsStr){ $('gemText').textContent = gemsStr; _hudPrev.gems=gemsStr; }
 }
 function hudRefreshSoon(){ updateHUD(); }
 
@@ -2239,7 +2436,7 @@ function openShop(){
   $('shopTitle').textContent = 'DEPTH CLEARED';
   $('btnNextDepth').textContent = 'Descend ▸';
   $('shopSub').textContent = `Depth ${RUN.depth} cleared — $${fmt(RUN.money)} on hand.`;
-  renderUpgradeTab(); renderPowerupTab(); renderSkinTab();
+  renderUpgradeTab(); renderPowerupTab(); renderMachineTab(); renderMinerTab(); renderSkinTab();
   showScreen('screen-shop');
 }
 function openShopFromLobby(){
@@ -2248,13 +2445,13 @@ function openShopFromLobby(){
   $('shopTitle').textContent = 'THE SHOP';
   $('btnNextDepth').textContent = '← Back to Lobby';
   $('shopSub').textContent = `$${fmt(S.money)} on hand · 💎${fmt(S.gems)} gems on hand.`;
-  renderUpgradeTab(); renderPowerupTab(); renderSkinTab();
+  renderUpgradeTab(); renderPowerupTab(); renderMachineTab(); renderMinerTab(); renderSkinTab();
   showScreen('screen-shop');
 }
 function refreshShop(){
   if(shopContext==='depth'){ S.money = RUN.money; $('shopSub').textContent = `Depth ${RUN.depth} cleared — $${fmt(RUN.money)} on hand.`; }
   else { S.money = RUN.money; $('shopSub').textContent = `$${fmt(S.money)} on hand · 💎${fmt(S.gems)} gems on hand.`; }
-  renderUpgradeTab(); renderPowerupTab(); renderSkinTab();
+  renderUpgradeTab(); renderPowerupTab(); renderMachineTab(); renderMinerTab(); renderSkinTab();
 }
 function renderUpgradeTab(){
   const box = $('tab-upgrades'); box.innerHTML='';
@@ -2304,6 +2501,76 @@ function renderPowerupTab(){
     });
     box.appendChild(card);
   });
+}
+function machineBonusText(bonus){
+  const parts=[];
+  if(bonus.power) parts.push('+'+Math.round(bonus.power*100)+'% Power');
+  if(bonus.speed) parts.push('+'+Math.round(bonus.speed*100)+'% Speed');
+  if(bonus.magnet) parts.push('+'+bonus.magnet+' Magnet');
+  if(bonus.crit) parts.push('+'+Math.round(bonus.crit*100)+'% Crit');
+  return parts.length ? parts.join(' · ') : 'No stat bonus';
+}
+function renderMachineTab(){
+  const box = $('tab-machines'); box.innerHTML='';
+  const grid = document.createElement('div'); grid.className='skin-grid';
+  MACHINE_DEFS.forEach(mc=>{
+    const owned = S.ownedMachines.includes(mc.id);
+    const active = S.machine===mc.id;
+    const levelOk = (S.maxDepthReached||1) >= mc.unlock;
+    const card = document.createElement('div'); card.className='skin-card'+(active?' active':'')+(!levelOk && !owned?' locked':'');
+    card.innerHTML = `<div class="swatch" style="background:radial-gradient(circle at 35% 30%, #fff2, #0004); display:flex; align-items:center; justify-content:center; font-size:16px;">${mc.icon}</div>
+      <div class="n">${mc.name}</div>
+      <div class="p" style="font-size:9.5px; opacity:.8;">${machineBonusText(mc.bonus)}</div>
+      <div class="p">${active?'Equipped':(owned?'Owned — tap to install':(!levelOk?'Unlocks at Depth '+mc.unlock:(mc.cost===0?'Free':(mc.currency==='gems'?'💎'+mc.cost:'$'+fmt(mc.cost)))))}</div>`;
+    card.addEventListener('click', ()=>{
+      if(!levelOk && !owned){ Audio_.error(); return; }
+      if(owned){ S.machine=mc.id; Audio_.click(); saveGame(); renderMachineTab(); return; }
+      const bal = mc.currency==='gems'?S.gems:RUN.money;
+      if(bal<mc.cost){ Audio_.error(); return; }
+      if(mc.currency==='gems') S.gems-=mc.cost; else { RUN.money-=mc.cost; S.money=RUN.money; }
+      S.ownedMachines.push(mc.id); S.machine=mc.id;
+      Audio_.upgrade(); saveGame(); renderMachineTab();
+    });
+    grid.appendChild(card);
+  });
+  box.appendChild(grid);
+}
+function renderMinerTab(){
+  const box = $('tab-miners'); box.innerHTML='';
+  const grid = document.createElement('div'); grid.className='skin-grid';
+  MINER_DEFS.forEach(mn=>{
+    const owned = S.ownedMiners.includes(mn.id);
+    const active = S.miner===mn.id;
+    const levelOk = (S.maxDepthReached||1) >= mn.unlock;
+    const sellable = owned && !active && mn.id!=='rookie';
+    const card = document.createElement('div'); card.className='skin-card'+(active?' active':'')+(!levelOk && !owned?' locked':'');
+    card.innerHTML = `<div class="swatch" style="background:radial-gradient(circle at 35% 30%, #fff2, #0004); display:flex; align-items:center; justify-content:center; font-size:18px;">${mn.icon}</div>
+      <div class="n">${mn.name}</div>
+      <div class="p" style="font-size:9.5px; opacity:.8;">💪 Strength ${mn.strength} · +${Math.round((mn.strength-1)*2.5)}% Power</div>
+      <div class="p">${active?'Working the claw':(owned?'Owned — tap to hire':(!levelOk?'Unlocks at Depth '+mn.unlock:(mn.cost===0?'Free':(mn.currency==='gems'?'💎'+mn.cost:'$'+fmt(mn.cost)))))}</div>
+      ${sellable?`<span class="sell-link">Sell for ${mn.currency==='gems'?'💎'+fmt(minerSellValue(mn)):'$'+fmt(minerSellValue(mn))}</span>`:''}`;
+    card.addEventListener('click', ()=>{
+      if(!levelOk && !owned){ Audio_.error(); return; }
+      if(owned){ S.miner=mn.id; Audio_.click(); saveGame(); renderMinerTab(); return; }
+      const bal = mn.currency==='gems'?S.gems:RUN.money;
+      if(bal<mn.cost){ Audio_.error(); return; }
+      if(mn.currency==='gems') S.gems-=mn.cost; else { RUN.money-=mn.cost; S.money=RUN.money; }
+      S.ownedMiners.push(mn.id); S.miner=mn.id;
+      Audio_.upgrade(); saveGame(); renderMinerTab();
+    });
+    if(sellable){
+      card.querySelector('.sell-link').addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const refund = minerSellValue(mn);
+        S.ownedMiners = S.ownedMiners.filter(id=>id!==mn.id);
+        if(mn.currency==='gems') S.gems += refund; else { RUN.money += refund; S.money = RUN.money; }
+        Audio_.coin(); saveGame(); toast('Miner Sold', `${mn.name} sold for ${mn.currency==='gems'?'💎'+fmt(refund):'$'+fmt(refund)}.`);
+        renderMinerTab();
+      });
+    }
+    grid.appendChild(card);
+  });
+  box.appendChild(grid);
 }
 function renderSkinTab(){
   const box = $('tab-skins'); box.innerHTML='';
@@ -2357,14 +2624,14 @@ function renderModes(){
     if(!locked){
       card.addEventListener('click', ()=>{
         Audio_.click(); Audio_.unlock();
-        if(m.id==='timeattack'){ RUN.mode='survival'; RUN.variant='timeattack'; }
-        else if(m.id==='hardcore'||m.id==='treasurehunt'||m.id==='night'){ RUN.mode='story'; RUN.variant=m.id; }
-        else { RUN.mode=m.id; RUN.variant=null; }
         S.energy = Math.max(0, S.energy-10); S.energyUpdatedAt = Date.now();
-        if(m.id==='survival') startSurvival();
-        else if(m.id==='challenge') startChallenge();
-        else if(m.id==='timeattack') startTimeAttack();
-        else startNewStoryRun();
+        if(m.id==='survival'){ RUN.mode='survival'; RUN.variant=null; startSurvival(); }
+        else if(m.id==='challenge'){ RUN.mode='challenge'; RUN.variant=null; startChallenge(); }
+        else if(m.id==='timeattack'){ startTimeAttack(); }
+        else if(m.id==='bossbattle'){ startBossBattle(); }
+        else if(m.id==='events'){ startLiveEvents(); }
+        else if(m.id==='hardcore'||m.id==='treasurehunt'||m.id==='night'){ RUN.mode='story'; RUN.variant=m.id; startNewStoryRun(); }
+        else { RUN.mode='story'; RUN.variant=null; startNewStoryRun(); }
         hideAllScreens();
         Audio_.setMusic(S.settings.music);
       });
@@ -2472,6 +2739,10 @@ function usePowerup(id){
   if(id==='doublemoney') RUN.buffDouble = Math.max(RUN.buffDouble, 15);
   if(id==='luckycharm') RUN.buffLucky = 5;
   if(id==='magnetburst') RUN.buffMagnet = 10;
+  if(id==='megatimefreeze') RUN.timeLeft += 12;
+  if(id==='megadouble') RUN.buffDouble = Math.max(RUN.buffDouble, 30);
+  if(id==='megaluckycharm') RUN.buffLucky = 12;
+  if(id==='megamagnet') RUN.buffMagnet = 20;
   saveGame();
   toast('Power-Up Used', POWERUP_DEFS.find(p=>p.id===id).name);
 }
@@ -2663,7 +2934,7 @@ function doPrestige(){
 function prestigeMultiplier(){ return 1 + S.prestige*0.15; }
 
 /* ---------- main menu refresh ---------- */
-const MODE_LABELS = { story:'Story Mode', survival:'Survival Mode', challenge:'Daily Challenge', timeattack:'Time Attack', hardcore:'Hardcore Mode', treasurehunt:'Treasure Hunt', night:'Night Mode' };
+const MODE_LABELS = { story:'Story Mode', survival:'Survival Mode', challenge:'Daily Challenge', timeattack:'Time Attack', hardcore:'Hardcore Mode', treasurehunt:'Treasure Hunt', night:'Night Mode', bossbattle:'Boss Battle', events:'Live Events' };
 function tickEnergy(){
   const now = Date.now();
   const elapsedMin = (now - (S.energyUpdatedAt||now))/60000;
@@ -2850,8 +3121,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     toast('Developer Mode', 'All rig upgrades maxed.');
   });
   $('devUnlockSkins').addEventListener('click', ()=>{
-    Audio_.click(); SKIN_DEFS.forEach(sk=>{ if(!S.ownedSkins.includes(sk.id)) S.ownedSkins.push(sk.id); }); refreshAfterDevGrant();
-    toast('Developer Mode', 'All skins unlocked.');
+    Audio_.click();
+    SKIN_DEFS.forEach(sk=>{ if(!S.ownedSkins.includes(sk.id)) S.ownedSkins.push(sk.id); });
+    MACHINE_DEFS.forEach(mc=>{ if(!S.ownedMachines.includes(mc.id)) S.ownedMachines.push(mc.id); });
+    MINER_DEFS.forEach(mn=>{ if(!S.ownedMiners.includes(mn.id)) S.ownedMiners.push(mn.id); });
+    refreshAfterDevGrant();
+    toast('Developer Mode', 'All skins, machines & miners unlocked.');
   });
   $('devFillPowerups').addEventListener('click', ()=>{
     Audio_.click(); Object.keys(S.inventory).forEach(k=>{ S.inventory[k] = 999; }); refreshAfterDevGrant();
@@ -2867,6 +3142,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     S.money += 100000;
     UPGRADE_DEFS.forEach(u=>{ S.upgrades[u.id] = u.max; });
     SKIN_DEFS.forEach(sk=>{ if(!S.ownedSkins.includes(sk.id)) S.ownedSkins.push(sk.id); });
+    MACHINE_DEFS.forEach(mc=>{ if(!S.ownedMachines.includes(mc.id)) S.ownedMachines.push(mc.id); });
+    MINER_DEFS.forEach(mn=>{ if(!S.ownedMiners.includes(mn.id)) S.ownedMiners.push(mn.id); });
     Object.keys(S.inventory).forEach(k=>{ S.inventory[k] = 999; });
     S.maxDepthReached = Math.max(S.maxDepthReached, 999);
     RUN.money = S.money;
@@ -2891,6 +3168,8 @@ function launchCurrentMode(){
   Audio_.click(); Audio_.unlock();
   S.energy = Math.max(0, S.energy-10); S.energyUpdatedAt = Date.now();
   if(RUN.variant==='timeattack') startTimeAttack();
+  else if(RUN.variant==='bossbattle') startBossBattle();
+  else if(RUN.variant==='events') startLiveEvents();
   else if(RUN.mode==='survival') startSurvival();
   else if(RUN.mode==='challenge') startChallenge();
   else startNewStoryRun();
@@ -2922,6 +3201,8 @@ $('btnGoMenu').addEventListener('click', ()=>{ Audio_.click(); RUN.state='MENU';
 $('btnRetry').addEventListener('click', ()=>{
   Audio_.click();
   if(RUN.variant==='timeattack') startTimeAttack();
+  else if(RUN.variant==='bossbattle') startBossBattle();
+  else if(RUN.variant==='events') startLiveEvents();
   else if(RUN.mode==='survival') startSurvival();
   else if(RUN.mode==='challenge') startChallenge();
   else startNewStoryRun();
