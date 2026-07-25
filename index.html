@@ -1459,12 +1459,14 @@ function startDepth(depth){
 
 function startNewStoryRun(){
   RUN.mode='story';
-  if(S.devMode){ RUN.money = S.money = 999999999; } else { RUN.money=0; S.money=0; }
+  if(S.devMode){ S.money = Math.max(S.money, 999999999); }
+  RUN.money = S.money;
   S.stats.runsPlayed++;
   startDepth(1);
 }
 function continueRun(){
   RUN.mode='story';
+  RUN.money = S.money;
   startDepth(S.depth||1);
 }
 function startSurvival(){
@@ -1495,7 +1497,8 @@ function variantRewardMul(){
 }
 function startBossBattle(){
   RUN.mode='story'; RUN.variant='bossbattle'; RUN.forcedEvent=null;
-  if(S.devMode){ RUN.money = S.money = 999999999; } else { RUN.money=0; S.money=0; }
+  if(S.devMode){ S.money = Math.max(S.money, 999999999); }
+  RUN.money = S.money;
   S.stats.runsPlayed++;
   const bossDepth = Math.max(10, Math.ceil((S.maxDepthReached||1)/10)*10);
   startDepth(bossDepth);
@@ -1505,7 +1508,8 @@ function startLiveEvents(){
   RUN.mode='story'; RUN.variant='events';
   const pool = RANDOM_EVENTS.filter(e=>e.id!=='none');
   RUN.forcedEvent = pool[irand(0,pool.length-1)];
-  if(S.devMode){ RUN.money = S.money = 999999999; } else { RUN.money=0; S.money=0; }
+  if(S.devMode){ S.money = Math.max(S.money, 999999999); }
+  RUN.money = S.money;
   S.stats.runsPlayed++;
   startDepth(1);
   toast('🎪 Live Event', RUN.forcedEvent.label || 'A special event is active for this run!');
